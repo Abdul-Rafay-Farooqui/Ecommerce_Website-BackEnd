@@ -14,6 +14,6 @@ const upload = multer({
   const router = express.Router();
 
   router.put("/", updateUserById);
-  router.delete("/:id", admin, deleteUserById);
+  router.delete("/:id",isAuth, admin, deleteUserById);
   
   export default router;
