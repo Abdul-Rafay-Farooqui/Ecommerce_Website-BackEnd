@@ -7,11 +7,12 @@ import {
     update_category,
     delete_category,
   } from "./services.js";
-  import { Categories } from "./Categories.js";
+  import { Category } from "./Categories.js";
     
 const getCategories = asyncHandler(async (req, res) => {
       await get_categories()
         .then((category) => {
+            res.status(201).json(category);
             return category;
         })
       .catch((error) => {
@@ -38,6 +39,7 @@ const getCategories = asyncHandler(async (req, res) => {
     const {name} = req.body;
     try {
         const category = await create(name);
+        res.status(201).json(category);
         return category;
     } catch (error) {
         res.status(500).json({error: error.message});
@@ -53,7 +55,8 @@ const updateCategoryById = asyncHandler(async (req, res) => {
             {
                 return res.status(401).json({message: "Invalid Category"});
             }
-        const updatedCategory = await update_category(category.id, name)
+        const updatedCategory = await update_category(category.id, name);
+        res.status(201).json({message: "Category Updated Successfully"});
         return updatedCategory[1];
     } catch (error) {
         res.status(500).json({error: error.message});

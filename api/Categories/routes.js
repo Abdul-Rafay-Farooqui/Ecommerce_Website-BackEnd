@@ -12,7 +12,7 @@ import {
   router.get("/", getCategories);
   router.get("/:id", getCategoryById);
   router.post("/",isAuth,admin , createCategory);
-  router.put("/",isAuth,admin, updateCategoryById);
+  router.put("/:id",isAuth,admin, updateCategoryById);
   router.delete("/:id",isAuth, admin, deleteCategoryById);
   
   export default router;

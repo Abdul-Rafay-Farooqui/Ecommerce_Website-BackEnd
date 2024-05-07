@@ -39,6 +39,38 @@ const signup = asyncHandler(async (req, res) => {
         
     }
 });
+const signupAdmin = asyncHandler(async (req, res) => {
+    const { name, phone_number, email, password, gender} = req.body;
+    try {
+        if(!name || !phone_number || !email || !password ||!gender){
+          return res.status(401).send("One or more Fields are null");
+        }
+
+          var isUser = await User.findOne({ where: { email } });
+          if(isUser){
+            return res.status(500).send("Account with this email already exists")
+          }
+        
+      var hashed_password = await bcrypt.hash(password, 10);
+      
+      const user = await registerUser( 
+        name,
+        phone_number,
+        email,
+        hashed_password,
+        gender,
+        "admin")
+          
+      logger.info("User " + user.id + " Created");
+          
+      return res
+        .status(201)
+        .json({ message: "Account created successfully", user: user });
+
+    } catch (error) {
+        
+    }
+});
 
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -55,4 +87,4 @@ const login = asyncHandler(async (req, res) => {
     });
 });
 
-export { login, signup };
+export { login, signup,signupAdmin };
