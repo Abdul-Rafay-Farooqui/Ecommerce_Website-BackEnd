@@ -9,12 +9,18 @@ import {
   getProductByCategoryId,
 } from "./controller.js";
 
-  const router = express.Router();
-  router.get("/", getProduct);
-  router.get("/:id", getProductById);
-  router.get("/category/:id", getProductByCategoryId);
-  router.post("/",isAuth,admin , createProduct);
-  router.put("/:id",isAuth,admin, updateProductById);
-  router.delete("/:id",isAuth, admin, deleteProductById);
-  
-  export default router;
+import multer from "multer";
+
+const uploads = multer({
+  storage: multer.memoryStorage(), // Use memory storage for image data
+});
+
+const router = express.Router();
+router.get("/", getProduct);
+router.get("/:id", getProductById);
+router.get("/category/:id", getProductByCategoryId);
+router.post("/", uploads.single("image"), isAuth, admin, createProduct);
+router.put("/:id", isAuth, admin, updateProductById);
+router.delete("/:id", isAuth, admin, deleteProductById);
+
+export default router;
